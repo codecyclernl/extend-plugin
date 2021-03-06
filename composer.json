@@ -1,0 +1,13 @@
+{
+    "name": "codecycler/oc-extend-plugin",
+    "description": "Extending October CMS plugins tool",
+    "type": "october-plugin",
+    "license": "GPL-3.0-only",
+    "authors": [
+        {
+            "name": "Sebastiaan Kloos",
+            "email": "sebastiaan@codecycler.com"
+        }
+    ],
+    "require": {}
+}
