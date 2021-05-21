@@ -7,7 +7,7 @@ class PluginExtender
 {
     private $controller;
 
-    private $model;
+    protected $model;
 
     public function __construct()
     {
