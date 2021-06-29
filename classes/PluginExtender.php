@@ -116,9 +116,7 @@ class PluginExtender
             }
 
             if (!$configExists) {
-                $c->addDynamicProperty('relationConfig', function ($relationConfig) {
-                    return $relationConfig;
-                });
+                $c->addDynamicProperty('relationConfig', $relationConfig);
             } else {
                 if ($configEmpty) {
                     $c->relationConfig = $relationConfig;
