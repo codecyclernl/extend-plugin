@@ -1,5 +1,5 @@
 {
-    "name": "codecycler/oc-extend-plugin",
+    "name": "codecycler/extend-plugin",
     "description": "Extending October CMS plugins tool",
     "type": "october-plugin",
     "license": "GPL-3.0-only",
