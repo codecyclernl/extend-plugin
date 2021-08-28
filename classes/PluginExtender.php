@@ -9,6 +9,8 @@ class PluginExtender
 
     protected $model;
 
+    protected $modelObj;
+
     public function __construct()
     {
         $this->load();
@@ -40,10 +42,12 @@ class PluginExtender
     public function subscribe()
     {
         $this->extendFormFields();
+        $this->extendListColumns();
         $this->extendRelationConfig();
         $this->extendRelations();
         $this->extendSubscribe();
         $this->extendMethods();
+        $this->extendProperties();
     }
 
     public function addFields()
@@ -52,6 +56,11 @@ class PluginExtender
     }
 
     public function addTabFields()
+    {
+        return [];
+    }
+
+    public function addColumns()
     {
         return [];
     }
@@ -77,6 +86,11 @@ class PluginExtender
     }
 
     public function methods()
+    {
+        return [];
+    }
+
+    public function properties()
     {
         return [];
     }
@@ -157,6 +171,25 @@ class PluginExtender
         });
     }
 
+    private function extendListColumns()
+    {
+        Event::listen('backend.list.extendColumns', function ($listWidget) {
+            if (!$listWidget->getController() instanceof $this->controller) {
+                return;
+            }
+
+            if (!$listWidget->model instanceof $this->model) {
+                return;
+            }
+
+            if ($listWidget->isNested) {
+                return;
+            }
+
+            $listWidget->addColumns($this->addColumns());
+        });
+    }
+
     private function extendRelations()
     {
         $model = $this->model;
@@ -179,6 +212,20 @@ class PluginExtender
         $model::extend(function ($model) use ($methods) {
             foreach ($methods as $functionName => $method) {
                 $model->addDynamicMethod($functionName, $method);
+            }
+        });
+    }
+
+    private function extendProperties()
+    {
+        $model = $this->model;
+        $properties = $this->properties();
+
+        $model::extend(function ($model) use ($properties) {
+            $this->modelObj = $model;
+
+            foreach ($properties as $propertyName => $method) {
+                $model->addDynamicProperty($propertyName, $method);
             }
         });
     }
