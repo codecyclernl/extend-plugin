@@ -112,19 +112,19 @@ class PluginExtender
         $configEmpty = true;
         $relationConfig = $this->addRelationConfig();
 
-        if (!in_array('Backend\Behaviors\RelationController', $controller->implement) && !in_array('Backend.Behaviors.RelationController', $controller->implement)) {
-            $addRelationController = true;
-        }
-
-        if (property_exists($controller, 'relationConfig')) {
-            $configExists = true;
-        }
-
-        if ($configExists && $controller->relationConfig) {
-            $configEmpty = false;
-        }
-
         $controller::extend(function ($c) use ($addRelationController, $configExists, $configEmpty, $relationConfig, $controller) {
+            if (!in_array('Backend\Behaviors\RelationController', $c->implement) && !in_array('Backend.Behaviors.RelationController', $c->implement)) {
+                $addRelationController = true;
+            }
+
+            if (property_exists($c, 'relationConfig')) {
+                $configExists = true;
+            }
+
+            if ($configExists && $c->relationConfig) {
+                $configEmpty = false;
+            }
+
             if ($addRelationController) {
                 array_push($c->implement, 'Backend\Behaviors\RelationController');
             }
